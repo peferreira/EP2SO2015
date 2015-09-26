@@ -3,8 +3,8 @@ import java.util.List;
 
 public class Processo {
 	String nome;
-	double t0;
-	double tf;
+	private int t0;
+	private int tf;
 	private int b;
 	private int pid;
 	private int posInicialMemoriaVirtual;
@@ -14,23 +14,24 @@ public class Processo {
 
 	List<AcessoDaMemoria> listaDeAcessosDaMemoria;
 	
-	public Processo(double t0, String nome, double tf, int b, int pid){
+	public Processo(int t0, String nome, int tf, int b, int pid){
 		this.t0 = t0;
 		this.nome = nome;
 		this.tf = tf;
 		this.b = b;
 		this.pid = pid;
+		posInicialMemoriaVirtual = -1;
 	}
 
 	public String getNome() {
 		return nome;
 	}
 
-	public double getT0() {
+	public int getT0() {
 		return t0;
 	}
 
-	public double getTf() {
+	public int getTf() {
 		return tf;
 	}
 

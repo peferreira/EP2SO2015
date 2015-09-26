@@ -1,16 +1,19 @@
+import java.util.LinkedList;
 import java.util.List;
+import java.math.*;
 
-
-public class FirstFit {
+public class FirstFit extends Gerenciador{
 	
-	List<BlocoLivre> blocosLivres;
-	List<Processo> processos;
+	
 
 	public FirstFit(List<Processo> processos, int virtual, int total){
 		inicializaBlocosLivres(virtual, total);
+		this.processos = processos;
+		memoriaLivre = virtual;
 	}
 	
 	void inicializaBlocosLivres(int virtual, int total){
+		blocosLivres = new LinkedList<BlocoLivre>();
 		blocosLivres.add(new BlocoLivre(0,virtual)); /*virtual ou total ??!*/
 	}
 	
@@ -19,6 +22,7 @@ public class FirstFit {
 			if(bloco.getTamanho() >= novoProcesso.getB()){
 				novoProcesso.setPosInicialMemoriaVirtual(bloco.getInicio());
 				particionaBlocoLivre(bloco, novoProcesso.getB());
+				decrementaMemLivre(novoProcesso.getB());
 				return true;
 			}
 		}
@@ -28,13 +32,53 @@ public class FirstFit {
 	void liberaMemoriaProcesso(Processo processoSaindo){
 		BlocoLivre novoBlocoLivre = new BlocoLivre(processoSaindo.getPosInicialMemoriaVirtual(),
 								                   processoSaindo.getB());
+		boolean uniuBlocos = false;
+		int posicaoDeEntrada = 0;
+		incrementaMemLivre(processoSaindo.getB());
 		for(BlocoLivre bloco: blocosLivres){
 			if(novoBlocoLivre.getInicio() < bloco.getInicio()){
-				blocosLivres.add(blocosLivres.indexOf(bloco), novoBlocoLivre);
+				posicaoDeEntrada = blocosLivres.indexOf(bloco);
+				System.out.println("posicao entrada:" + posicaoDeEntrada);
+				if(posicaoDeEntrada > 0 ){
+					if(novoBlocoLivre.getInicio() == blocosLivres.get(posicaoDeEntrada-1).calculaPosicaoFinal() + 1 ){
+						aumentaBlocoEsq(posicaoDeEntrada, novoBlocoLivre.getTamanho());
+						uniuBlocos = true;
+						System.out.println("uniubloco");
+					}
+				}
+				if(posicaoDeEntrada < blocosLivres.size()-1 ){
+					if(novoBlocoLivre.calculaPosicaoFinal() == blocosLivres.get(posicaoDeEntrada).getInicio() - 1 ){
+						if(uniuBlocos == true){
+							aumentaBlocoEsq(posicaoDeEntrada, blocosLivres.get(posicaoDeEntrada-1).getTamanho());
+							blocosLivres.remove(posicaoDeEntrada);
+						}
+						else{
+							aumentaBlocoDir(posicaoDeEntrada, novoBlocoLivre.getTamanho());
+							uniuBlocos = true;
+						}
+						System.out.println("uniubloco2!");
+					}
+				}
+				if(uniuBlocos == false)
+					blocosLivres.add(posicaoDeEntrada, novoBlocoLivre);
 				break;
 			}
 		}
 	}
+	/*junta o bloco da posicao de entrada -1 com o bloco da posicao de entrada*/
+	private void aumentaBlocoEsq(int posicaoDeEntrada, int tamanho){
+		BlocoLivre esq = blocosLivres.get(posicaoDeEntrada-1);
+		esq.setTamanho(esq.getTamanho() + tamanho); 
+	}
+	
+	private void aumentaBlocoDir(int posicaoDeEntrada, int tamanho){
+		BlocoLivre pos = blocosLivres.get(posicaoDeEntrada);
+		pos.setTamanho(pos.getTamanho() + tamanho);
+		pos.setInicio(pos.getInicio() - tamanho);
+	}
+	
+	
+	
 	
 	void desfragmentaMemoriaProcesso(){
 		
@@ -53,6 +97,56 @@ public class FirstFit {
 			
 	}
 
+	public void executar(){
+		long tempoInicial = System.nanoTime();
+		long tempoAtual;
+		long tempoPassado;
+		tempoPassado = tempoAtual = 0;
+		while(!processos.isEmpty()){
+			tempoAtual = (long) ((System.nanoTime() - tempoInicial)/ 1e9);
+			
+				
+			for(Processo p: processos){/*posicao menor que 0 processo nao esta na memoria*/
+				if (tempoAtual >= p.getT0() && p.getPosInicialMemoriaVirtual() < 0) {
+					alocarMemoriaProcesso(p);
+				}
+				/*posicao maior ou igual a 0 processo esta na memoria*/
+				if (tempoAtual >= p.getTf() && p.getPosInicialMemoriaVirtual() >= 0){
+					liberaMemoriaProcesso(p);
+					processos.remove(p);
+					break;/*evitar concurrent modification na lista*/
+				}
+			}
+			
+			if(tempoAtual - tempoPassado > 1){
+				System.out.println(tempoAtual);
+				tempoPassado = tempoAtual;
+				imprimeProcessosNaMemoria();
+				imprimeBlocosLivres();
+				System.out.println("memoria livre:"+ memoriaLivre);
+			}
+		
+			
+		}
+		
+		
+	}
+	
+	
+	void imprimeProcessosNaMemoria(){
+		for (Processo p: processos){
+			if(p.getPosInicialMemoriaVirtual() >= 0 ){
+				System.out.println("nome:" +p.nome+ " | pos memoria:" + p.getPosInicialMemoriaVirtual());
+			}
+		}
+	}
+	
+	void imprimeBlocosLivres(){
+		for (BlocoLivre b: blocosLivres){
+			System.out.println("inicio:" + b.getInicio() + "     final:"+ b.calculaPosicaoFinal() + "     tamanho:"+ b.getTamanho());
+		}
+	}
+	
 	
 	
 }

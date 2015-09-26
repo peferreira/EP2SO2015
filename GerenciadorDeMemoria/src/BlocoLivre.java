@@ -19,4 +19,7 @@ public class BlocoLivre {
 	public int getTamanho() {
 		return tamanho;
 	}
+	public int calculaPosicaoFinal(){
+		return inicio+tamanho-1;
+	}
 }

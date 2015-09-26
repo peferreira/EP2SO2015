@@ -1,3 +1,5 @@
+import java.util.List;
+
 
 public class Simulador {
 
@@ -5,7 +7,16 @@ public class Simulador {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
+		LeituraDaEntrada le = new LeituraDaEntrada();
+		List<Processo> listaDeProc = le.criarListaDeProcessos();
+		for (Processo p: listaDeProc){
+			System.out.println("nome:" +p.nome+ " | pos t0:" + p.getT0());
+		}
+		System.out.println("mem virtual:" +le.getVirtual());
+		System.out.println("mem total:" +le.getTotal());
+
+		FirstFit ff = new FirstFit(listaDeProc, le.getVirtual(), le.getTotal());
+		ff.executar();
 		
 	}
 
