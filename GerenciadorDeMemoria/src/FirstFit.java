@@ -41,15 +41,15 @@ public class FirstFit extends Gerenciador{
 				System.out.println("posicao entrada:" + posicaoDeEntrada);
 				if(posicaoDeEntrada > 0 ){
 					if(novoBlocoLivre.getInicio() == blocosLivres.get(posicaoDeEntrada-1).calculaPosicaoFinal() + 1 ){
-						aumentaBlocoEsq(posicaoDeEntrada, novoBlocoLivre.getTamanho());
+						aumentaBlocoEsq(posicaoDeEntrada-1, novoBlocoLivre.getTamanho());
 						uniuBlocos = true;
 						System.out.println("uniubloco");
 					}
 				}
-				if(posicaoDeEntrada < blocosLivres.size()-1 ){
+				if(posicaoDeEntrada < blocosLivres.size() ){
 					if(novoBlocoLivre.calculaPosicaoFinal() == blocosLivres.get(posicaoDeEntrada).getInicio() - 1 ){
 						if(uniuBlocos == true){
-							aumentaBlocoEsq(posicaoDeEntrada, blocosLivres.get(posicaoDeEntrada-1).getTamanho());
+							aumentaBlocoEsq(posicaoDeEntrada-1, blocosLivres.get(posicaoDeEntrada).getTamanho());
 							blocosLivres.remove(posicaoDeEntrada);
 						}
 						else{
@@ -66,8 +66,8 @@ public class FirstFit extends Gerenciador{
 		}
 	}
 	/*junta o bloco da posicao de entrada -1 com o bloco da posicao de entrada*/
-	private void aumentaBlocoEsq(int posicaoDeEntrada, int tamanho){
-		BlocoLivre esq = blocosLivres.get(posicaoDeEntrada-1);
+	private void aumentaBlocoEsq(int posicaoBlocoEsq, int tamanho){
+		BlocoLivre esq = blocosLivres.get(posicaoBlocoEsq);
 		esq.setTamanho(esq.getTamanho() + tamanho); 
 	}
 	
@@ -106,7 +106,7 @@ public class FirstFit extends Gerenciador{
 			tempoAtual = (long) ((System.nanoTime() - tempoInicial)/ 1e9);
 			
 				
-			for(Processo p: processos){/*posicao menor que 0 processo nao esta na memoria*/
+			for(Processo p: processos){/*posicao menor que zero: o processo nao esta na memoria*/
 				if (tempoAtual >= p.getT0() && p.getPosInicialMemoriaVirtual() < 0) {
 					alocarMemoriaProcesso(p);
 				}
@@ -125,14 +125,25 @@ public class FirstFit extends Gerenciador{
 				imprimeBlocosLivres();
 				System.out.println("memoria livre:"+ memoriaLivre);
 			}
-		
+			imprimeProcessos();
+
 			
 		}
-		
-		
+		imprimeProcessos();
+		imprimeProcessosNaMemoria();
+		imprimeBlocosLivres();
+		System.out.println("memoria livre:"+ memoriaLivre);
 	}
 	
 	
+	private void imprimeProcessos() {
+		for (Processo p: processos){
+			System.out.println("nome:" +p.nome+ " | pos memoria:" + p.getPosInicialMemoriaVirtual());
+			
+		}
+		
+	}
+
 	void imprimeProcessosNaMemoria(){
 		for (Processo p: processos){
 			if(p.getPosInicialMemoriaVirtual() >= 0 ){
