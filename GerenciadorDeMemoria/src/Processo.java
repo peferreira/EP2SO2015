@@ -1,10 +1,11 @@
 import java.util.List;
 
 
-public class Processo {
+public class Processo implements Comparable<Processo>{
 	String nome;
 	private int t0;
 	private int tf;
+	private int tfRelativo;
 	private int b;
 	private int pid;
 	private int posInicialMemoriaVirtual;
@@ -23,6 +24,16 @@ public class Processo {
 		posInicialMemoriaVirtual = -1;
 	}
 
+	
+	
+	public void setTfRelativo(int tempoDeInicio){
+		this.tfRelativo = tempoDeInicio + tf - t0;
+	}
+	
+	public int getTfRelativo(){
+		return tfRelativo;
+	}
+	
 	public String getNome() {
 		return nome;
 	}
@@ -53,6 +64,20 @@ public class Processo {
 
 	public void setPosInicialMemoriaVirtual(int posInicialMemoriaVirtual) {
 		this.posInicialMemoriaVirtual = posInicialMemoriaVirtual;
+	}
+
+	public int calculaPosicaoFinal(){
+		return posInicialMemoriaVirtual+b-1;
+	}
+	
+	@Override
+	public int compareTo(Processo p) {
+		if(this.getPosInicialMemoriaVirtual() < p.getPosInicialMemoriaVirtual()){
+			return -1;
+		}else{
+			return 1;
+		}
+		
 	}
 	
 }
