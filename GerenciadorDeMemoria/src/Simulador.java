@@ -15,8 +15,10 @@ public class Simulador {
 		System.out.println("mem virtual:" +le.getVirtual());
 		System.out.println("mem total:" +le.getTotal());
 
-		FirstFit ff = new FirstFit(listaDeProc, le.getVirtual(), le.getTotal());
-		ff.executar();
+		Gerenciador ff = new FirstFit(listaDeProc, le.getVirtual(), le.getTotal());
+		Gerenciador nf = new NextFit(listaDeProc, le.getVirtual(), le.getTotal());
+
+		nf.executar();
 		
 	}
 
