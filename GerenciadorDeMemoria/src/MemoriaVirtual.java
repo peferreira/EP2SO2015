@@ -1,10 +1,11 @@
 
 public class MemoriaVirtual {
-	private final int numBytesPorPagina = 16;
+	private int numBytesPorPagina;
 	private Pagina[] paginas;
 	private int tamanho; 
 	
-	public MemoriaVirtual(int tamanho){
+	public MemoriaVirtual(int tamanho, int numBytesPorPagina){
+		this.numBytesPorPagina = numBytesPorPagina;
 		this.tamanho = tamanho;
 		paginas = new Pagina[tamanho/numBytesPorPagina];
 	}
@@ -12,28 +13,29 @@ public class MemoriaVirtual {
 
 
     /*recebe o endereço da memoria virtual e devolve o respectivo endereco na mem fisica*/
-	int getEnderecoPaginaDaMemoriaFisica(int enderecoPaginaMemoriaVirtual){
+	int getQuadroDaMemoriaFisica(int enderecoPaginaMemoriaVirtual){
 		int enderecoMemFisica;
 		int paginaMemVirtual = enderecoPaginaMemoriaVirtual / numBytesPorPagina;
 		Pagina p = paginas[paginaMemVirtual];
 		if(p.estaNaMemoriaFisica())
-			return p.getEnderecoNaMemoriaFisica();
+			return p.getQuadro();
 		else
 			return -1;
 	}
 
 	/*define um valor de endereço para memoria fisica*/
-	void setEnderecoPaginaDaMemoriaFisica(int enderecoPaginaMemoriaVirtual, int enderecoPaginaNaMemoriaFisica){
-		int paginaMemVirtual = enderecoPaginaMemoriaVirtual / numBytesPorPagina;
+	void setQuadroDaMemoriaFisica(int posicaoMemoriaVirtual, int quadro){
+		int paginaMemVirtual = posicaoMemoriaVirtual / numBytesPorPagina;
 		Pagina p = paginas[paginaMemVirtual];
 		if(!p.estaNaMemoriaFisica()){
-			p.setEnderecoNaMemoriaFisica(enderecoPaginaNaMemoriaFisica);
+			p.setQuadro(quadro);
 			p.setEstaNaMemoriaFisica(true);
 		}
+		else
+			System.out.println("ja estava na memoria fisica!!!!");
 	}
 	
-	void removePaginaDaMemoriaFisica(int enderecoPaginaMemorialVirtual){
-		int paginaMemVirtual = enderecoPaginaMemorialVirtual / numBytesPorPagina;
+	void removeQuadroDaMemoriaFisica(int paginaMemVirtual){
 		Pagina p = paginas[paginaMemVirtual];
 		if(p.estaNaMemoriaFisica()){
 			p.setEstaNaMemoriaFisica(false);
@@ -45,19 +47,19 @@ public class MemoriaVirtual {
 }
 
 class Pagina{
-	int enderecoNaMemoriaFisica;
+	int quadro;
 	boolean estaNaMemoriaFisica;
 	
 	public Pagina(){
 	
 	}
 	
-	public int getEnderecoNaMemoriaFisica() {
-		return enderecoNaMemoriaFisica;
+	public int getQuadro() {
+		return quadro;
 	}
 
-	public void setEnderecoNaMemoriaFisica(int enderecoNaMemoriaFisica) {
-		this.enderecoNaMemoriaFisica = enderecoNaMemoriaFisica;
+	public void setQuadro(int quadro) {
+		this.quadro = quadro;
 	}
 
 	public boolean estaNaMemoriaFisica() {

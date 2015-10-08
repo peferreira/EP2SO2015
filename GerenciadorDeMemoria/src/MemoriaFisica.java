@@ -1,19 +1,23 @@
 
 public class MemoriaFisica {
-	
-	private final int numBytesPorPagina = 16;
+	private int numBytesPorPagina;
 	private Quadro[] quadros;
 	private int tamanho; 
-	public MemoriaFisica(int tamanho){
+	public MemoriaFisica(int tamanho, int numBytesPorPagina){
 		this.tamanho = tamanho;
+		this.numBytesPorPagina = numBytesPorPagina;
 		quadros = new Quadro[tamanho/numBytesPorPagina];
 	}
 	
 
-    void setPaginaMemoriaVirtual(int quadroMemoriaFisica, int paginaMemoriaVirtual){
+    void setPaginaMemoriaVirtual(int quadroMemoriaFisica, int posicaoMemoriaVirtual){
+    	int paginaMemoriaVirtual = posicaoMemoriaVirtual/numBytesPorPagina;
     	quadros[quadroMemoriaFisica].setPaginaMemoriaVirtual(paginaMemoriaVirtual);
     }
 
+    int getPagina(int quadro){
+    	return quadros[quadro].getPagina();
+    }
     
     int getQuadroLivreNaMemoria(){
     	for(int i=0; i < quadros.length; i++){
@@ -35,6 +39,9 @@ class Quadro {
 	
 	Quadro(){
 		quadroOcupado = false;
+	}
+	public int getPagina(){
+		return paginaMemoriaVirtual;
 	}
 	
 	public void setPaginaMemoriaVirtual(int paginaMemoriaVirtual){

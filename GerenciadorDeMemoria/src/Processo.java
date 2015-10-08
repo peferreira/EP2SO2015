@@ -1,4 +1,7 @@
+import java.util.AbstractQueue;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 
 public class Processo implements Comparable<Processo>{
@@ -13,7 +16,7 @@ public class Processo implements Comparable<Processo>{
 	
 	
 
-	List<AcessoDaMemoria> listaDeAcessosDaMemoria;
+	Queue<AcessoDaMemoria> filaDeAcessosDaMemoria;
 	
 	public Processo(int t0, String nome, int tf, int b, int pid){
 		this.t0 = t0;
@@ -22,6 +25,8 @@ public class Processo implements Comparable<Processo>{
 		this.b = b;
 		this.pid = pid;
 		posInicialMemoriaVirtual = -1;
+		Queue<AcessoDaMemoria> filaDeAcessosDaMemoria = new LinkedList<AcessoDaMemoria>();
+
 	}
 
 	
@@ -54,8 +59,8 @@ public class Processo implements Comparable<Processo>{
 		return pid;
 	}
 
-	public List<AcessoDaMemoria> getListaDeAcessosDaMemoria() {
-		return listaDeAcessosDaMemoria;
+	public Queue<AcessoDaMemoria> getFilaDeAcessosDaMemoria() {
+		return filaDeAcessosDaMemoria;
 	}
 	
 	public int getPosInicialMemoriaVirtual() {

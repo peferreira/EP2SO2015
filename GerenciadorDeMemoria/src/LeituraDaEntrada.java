@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,4 +37,59 @@ public class LeituraDaEntrada {
 		}
 		return listaDeProcessos;
 	}
+	
+	
+	void lerEntrada(){
+		int numProcessos = 0;
+		BufferedReader br = null;
+
+		try {
+
+			String linhaAtual;
+     		br = new BufferedReader(new FileReader("src/entrada.txt"));
+			while ((linhaAtual = br.readLine()) != null) {
+				
+				System.out.println(linhaAtual);
+				String[] linha = linhaAtual.split("");
+				
+				t0[numProcessos] = Integer.parseInt(linha[0]);
+				nome[numProcessos] = linha[1];
+				tf[numProcessos] = Integer.parseInt(linha[2]);
+				b[numProcessos] = Integer.parseInt(linha[3]);
+
+				int p,t;
+				p = t = 0;
+				Processo proc = new Processo(t0[numProcessos], nome[numProcessos], tf[numProcessos], b[numProcessos], numProcessos);
+				
+				for(int i = 4; i < linha.length; i++){
+					if(i%2 == 0){
+						p = Integer.parseInt(linha[i]);
+					}
+					else{
+						t = Integer.parseInt(linha[i]);
+						AcessoDaMemoria acessoDaMemoria = new AcessoDaMemoria(p, t);
+						proc.filaDeAcessosDaMemoria.add(acessoDaMemoria);
+					}
+					
+				
+				}
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (br != null)br.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+	
+		
+		
+	
+	}
+	
+	
+	
 }

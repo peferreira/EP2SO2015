@@ -1,6 +1,7 @@
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 
 public class Gerenciador {
@@ -24,7 +25,7 @@ public class Gerenciador {
 	boolean alocarMemoriaProcesso(Processo novoProcesso){return true;}
 
 	
-	public void executar(){
+	public void executar(Memoria mem, NotRecentlyUsedPage nrup){
 		long tempoInicial = System.nanoTime();
 		long tempoAtual;
 		long tempoPassado;
@@ -66,6 +67,8 @@ public class Gerenciador {
 				}
 			}
 			
+			paginacao(mem, nrup, tempoAtual);
+			
 			if(tempoAtual - tempoPassado > 0){
 				System.out.println(tempoAtual);
 				tempoPassado = tempoAtual;
@@ -73,7 +76,7 @@ public class Gerenciador {
 				imprimeBlocosLivres();
 				System.out.println("memoria livre:"+ memoriaLivre);
 			}
-
+			
 			
 		}
 		System.out.println("situacao final da memoria:");
@@ -83,6 +86,17 @@ public class Gerenciador {
 		System.out.println("memoria livre:"+ memoriaLivre);
 	}
     
+	void paginacao(Memoria mem, NotRecentlyUsedPage nrup, long tempoAtual){
+		AcessoDaMemoria acessoDaMemoria;
+		Queue<AcessoDaMemoria> filaDeAcessoMemoria;
+		for(Processo p: processos){
+			filaDeAcessoMemoria = p.getFilaDeAcessosDaMemoria();
+			if(!filaDeAcessoMemoria.isEmpty() && filaDeAcessoMemoria.element().getT() >= tempoAtual){
+				acessoDaMemoria = p.getFilaDeAcessosDaMemoria().poll();
+				mem.acessarMemoria(acessoDaMemoria, nrup);
+			}
+		}
+	}
 	
 	void liberaMemoriaProcesso(Processo processoSaindo){
 		BlocoLivre novoBlocoLivre = new BlocoLivre(processoSaindo.getPosInicialMemoriaVirtual(),
@@ -191,5 +205,8 @@ public class Gerenciador {
 			System.out.println("inicio:" + b.getInicio() + "     final:"+ b.calculaPosicaoFinal() + "     tamanho:"+ b.getTamanho());
 		}
 	}
+	
+	
+	
 	
 }
