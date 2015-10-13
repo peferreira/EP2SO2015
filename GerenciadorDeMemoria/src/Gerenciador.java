@@ -98,9 +98,9 @@ public class Gerenciador {
 		Queue<AcessoDaMemoria> filaDeAcessoMemoria;
 		for(Processo p: processos){
 			filaDeAcessoMemoria = p.getFilaDeAcessosDaMemoria();
-			if(!filaDeAcessoMemoria.isEmpty() && filaDeAcessoMemoria.element().getT() >= tempoAtual){
+			if(!filaDeAcessoMemoria.isEmpty() && filaDeAcessoMemoria.element().getT() <= tempoAtual){
 				acessoDaMemoria = p.getFilaDeAcessosDaMemoria().poll();
-				mem.acessarMemoria(acessoDaMemoria, nrup);
+				mem.acessarMemoria(acessoDaMemoria, nrup, p.getPosInicialMemoriaVirtual());
 			}
 		}
 	}

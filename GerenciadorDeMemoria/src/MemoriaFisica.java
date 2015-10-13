@@ -25,6 +25,7 @@ public class MemoriaFisica {
     int getQuadroLivreNaMemoria(){
     	for(int i=0; i < quadros.length; i++){
     		if(!quadros[i].quadroEstaOcupado()){
+    			quadros[i].setQuadroOcupado(true);
     			return i;
     		}
     	}
