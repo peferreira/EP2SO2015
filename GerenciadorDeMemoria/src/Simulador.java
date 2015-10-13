@@ -16,12 +16,13 @@ public class Simulador {
 		System.out.println("mem total:" +le.getTotal());
 		
 		
-		le.lerEntrada();
-		/*Gerenciador ff = new FirstFit(listaDeProc, le.getVirtual(), le.getTotal());
-		Gerenciador nf = new NextFit(listaDeProc, le.getVirtual(), le.getTotal());
+		Gerenciador ff = new FirstFit(listaDeProc, le.getVirtual(), le.getTotal());
+		
+		/*Gerenciador nf = new NextFit(listaDeProc, le.getVirtual(), le.getTotal());*/
 		Memoria mem = new Memoria(le.getTotal(), le.getVirtual());
 		NotRecentlyUsedPage nrup = new NotRecentlyUsedPage(le.getTotal()/16);
-		nf.executar(mem, nrup);*/
+		
+		ff.executar(mem, nrup);
 		
 		
 	}

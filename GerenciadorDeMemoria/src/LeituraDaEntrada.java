@@ -25,24 +25,24 @@ public class LeituraDaEntrada {
 
 	public LeituraDaEntrada(){
 		numProcessos = 0;
-		virtual = 60;
-		total = 30;
+		virtual = 64;
+		total = 32;
 	}
 	
-	List<Processo> criarListaDeProcessos(){
+	/*List<Processo> criarListaDeProcessos(){
 		List<Processo> listaDeProcessos = new LinkedList<Processo>();
 		for(int i = 0; i < t0.length; i++){
 			listaDeProcessos.add(new Processo(t0[i], nome[i], tf[i], b[i],numProcessos));
 			numProcessos++;
 		}
 		return listaDeProcessos;
-	}
+	}*/
 	
-	
-	void lerEntrada(){
+	/*le entrada e retorna lista de processos*/
+	List<Processo> criarListaDeProcessos(){
 		int numProcessos = 0;
 		BufferedReader br = null;
-
+		List<Processo> listaDeProcessos = new LinkedList<Processo>();
 		try {
 
 			String linhaAtual;
@@ -50,7 +50,7 @@ public class LeituraDaEntrada {
 			while ((linhaAtual = br.readLine()) != null) {
 				
 				System.out.println(linhaAtual);
-				String[] linha = linhaAtual.split("");
+				String[] linha = linhaAtual.split(" ");
 				
 				t0[numProcessos] = Integer.parseInt(linha[0]);
 				nome[numProcessos] = linha[1];
@@ -60,7 +60,7 @@ public class LeituraDaEntrada {
 				int p,t;
 				p = t = 0;
 				Processo proc = new Processo(t0[numProcessos], nome[numProcessos], tf[numProcessos], b[numProcessos], numProcessos);
-				
+		
 				for(int i = 4; i < linha.length; i++){
 					if(i%2 == 0){
 						p = Integer.parseInt(linha[i]);
@@ -69,10 +69,12 @@ public class LeituraDaEntrada {
 						t = Integer.parseInt(linha[i]);
 						AcessoDaMemoria acessoDaMemoria = new AcessoDaMemoria(p, t);
 						proc.filaDeAcessosDaMemoria.add(acessoDaMemoria);
+						
 					}
-					
-				
 				}
+				listaDeProcessos.add(proc);
+				numProcessos++;
+				return listaDeProcessos;
 			}
 
 		} catch (IOException e) {
@@ -86,7 +88,7 @@ public class LeituraDaEntrada {
 		}
 	
 		
-		
+		return null;
 	
 	}
 	

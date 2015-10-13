@@ -7,6 +7,9 @@ public class MemoriaFisica {
 		this.tamanho = tamanho;
 		this.numBytesPorPagina = numBytesPorPagina;
 		quadros = new Quadro[tamanho/numBytesPorPagina];
+		for(int i = 0; i < tamanho/numBytesPorPagina; i++){
+			quadros[i] = new Quadro();
+		}
 	}
 	
 
@@ -27,6 +30,13 @@ public class MemoriaFisica {
     	}
     	return -1;
     }
+
+
+	void removeProcesso(int numPaginas, int quadroDaMemoriaFisica) {
+		for (int i = quadroDaMemoriaFisica; i < quadroDaMemoriaFisica + numPaginas;i++){
+			quadros[i].setQuadroOcupado(false);
+		}
+	}
 
 	
 }

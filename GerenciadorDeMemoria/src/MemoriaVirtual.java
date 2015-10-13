@@ -8,6 +8,9 @@ public class MemoriaVirtual {
 		this.numBytesPorPagina = numBytesPorPagina;
 		this.tamanho = tamanho;
 		paginas = new Pagina[tamanho/numBytesPorPagina];
+		for(int i = 0; i < tamanho/numBytesPorPagina; i++){
+			paginas[i] = new Pagina();
+		}
 	}
 	
 
@@ -43,7 +46,22 @@ public class MemoriaVirtual {
 		else
 			System.out.println("esta tentando remover uma pagina que nao estava na memoria fisica!!!!");
 	}
+	
+	boolean processoEstaNaMemoriaFisica(Processo p){
+		int paginaMemVirtual = p.getPosInicialMemoriaVirtual() / numBytesPorPagina;
+		return paginas[paginaMemVirtual].estaNaMemoriaFisica(); 
+	}
 
+
+
+	void removeProcesso(Processo p) {
+		int paginaMemVirtual = p.getPosInicialMemoriaVirtual() / numBytesPorPagina;
+		for(int i = paginaMemVirtual; i < p.getNumPaginas() + paginaMemVirtual; i++){
+			if(paginas[i].estaNaMemoriaFisica()){
+				paginas[i].setEstaNaMemoriaFisica(false);
+			}
+		}
+	}
 }
 
 class Pagina{
@@ -51,7 +69,7 @@ class Pagina{
 	boolean estaNaMemoriaFisica;
 	
 	public Pagina(){
-	
+		estaNaMemoriaFisica = false;
 	}
 	
 	public int getQuadro() {

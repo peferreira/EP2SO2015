@@ -12,7 +12,7 @@ public class Processo implements Comparable<Processo>{
 	private int b;
 	private int pid;
 	private int posInicialMemoriaVirtual;
-	
+	private int numPaginas;
 	
 	
 
@@ -25,8 +25,8 @@ public class Processo implements Comparable<Processo>{
 		this.b = b;
 		this.pid = pid;
 		posInicialMemoriaVirtual = -1;
-		Queue<AcessoDaMemoria> filaDeAcessosDaMemoria = new LinkedList<AcessoDaMemoria>();
-
+		this.numPaginas = b/16;
+		filaDeAcessosDaMemoria = new LinkedList<AcessoDaMemoria>();
 	}
 
 	
@@ -84,5 +84,18 @@ public class Processo implements Comparable<Processo>{
 		}
 		
 	}
+
+
+
+	public int getNumPaginas() {
+		return numPaginas;
+	}
+
+
+
+	public void setNumPaginas(int numPaginas) {
+		this.numPaginas = numPaginas;
+	}
+	
 	
 }

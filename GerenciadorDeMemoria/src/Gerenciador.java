@@ -8,6 +8,7 @@ public class Gerenciador {
 	List<BlocoLivre> blocosLivres;
 	List<Processo> processos;
 	int memoriaLivre;
+	private final int numBytesPorPagina = 16;
 	
 	void incrementaMemLivre(int incremento){
 		memoriaLivre += incremento;
@@ -20,7 +21,7 @@ public class Gerenciador {
 	
 	void inicializaBlocosLivres(int virtual, int total){
 		blocosLivres = new LinkedList<BlocoLivre>();
-		blocosLivres.add(new BlocoLivre(0,virtual)); /*virtual ou total ??!*/
+		blocosLivres.add(new BlocoLivre(0,virtual)); /*virtual*/
 	}
 	boolean alocarMemoriaProcesso(Processo novoProcesso){return true;}
 
@@ -40,6 +41,7 @@ public class Gerenciador {
 						if(alocarMemoriaProcesso(p)){
 							//System.out.println("alocando memoria p/"+ p.nome + "  tempo atual:" + tempoAtual);
 							p.setTfRelativo((int)tempoAtual);
+							
 						}
 					
 						else{
@@ -61,13 +63,15 @@ public class Gerenciador {
 				/*posicao maior ou igual a 0 processo esta na memoria*/
 				if (p.getPosInicialMemoriaVirtual() >= 0 && tempoAtual >= p.getTfRelativo()  ){
 					liberaMemoriaProcesso(p);
+					mem.liberaMemoria(p);
 					processos.remove(p);
 					System.out.println("removi o processo" + p.nome + "   tempo atual:"+ tempoAtual+ "       tf relativo:"+ p.getTfRelativo());
 					break;/*evitar concurrent modification na lista*/
 				}
 			}
 			
-			paginacao(mem, nrup, tempoAtual);
+	
+			rotinaDeAcessosMemoria(mem, nrup, tempoAtual);
 			
 			if(tempoAtual - tempoPassado > 0){
 				System.out.println(tempoAtual);
@@ -86,7 +90,10 @@ public class Gerenciador {
 		System.out.println("memoria livre:"+ memoriaLivre);
 	}
     
-	void paginacao(Memoria mem, NotRecentlyUsedPage nrup, long tempoAtual){
+	/*vai verificar o os proximos acessos a memoria no intervalo de tempo passado*/
+	void rotinaDeAcessosMemoria(Memoria mem, NotRecentlyUsedPage nrup, long tempoAtual){
+		
+		
 		AcessoDaMemoria acessoDaMemoria;
 		Queue<AcessoDaMemoria> filaDeAcessoMemoria;
 		for(Processo p: processos){
@@ -158,8 +165,18 @@ public class Gerenciador {
 	
 	
 	void particionaBlocoLivre(BlocoLivre bloco, int b) {
-		bloco.setInicio(bloco.getInicio() + b);
-		bloco.setTamanho(bloco.getTamanho() - b);
+		int inicioNovoBloco, tamanhoAlocado;
+		if(b % numBytesPorPagina == 0){
+			tamanhoAlocado = b;
+			inicioNovoBloco = bloco.getInicio() + tamanhoAlocado;
+		}
+		else{
+			tamanhoAlocado = (b/numBytesPorPagina + 1)*numBytesPorPagina;
+			inicioNovoBloco = bloco.getInicio() + tamanhoAlocado; 
+		}
+		
+		bloco.setInicio(inicioNovoBloco);
+		bloco.setTamanho(bloco.getTamanho() - tamanhoAlocado);
 		if(bloco.getTamanho() == 0){
 			
 			blocosLivres.remove(bloco);
