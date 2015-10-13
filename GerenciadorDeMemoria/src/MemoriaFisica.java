@@ -32,9 +32,10 @@ public class MemoriaFisica {
     }
 
 
-	void removeProcesso(int numPaginas, int quadroDaMemoriaFisica) {
-		for (int i = quadroDaMemoriaFisica; i < quadroDaMemoriaFisica + numPaginas;i++){
-			quadros[i].setQuadroOcupado(false);
+	void removeProcesso(int[] quadrosParaRemover) {
+		for( int i = 0; i < quadros.length; i++){
+			quadros[quadrosParaRemover[i]].setQuadroOcupado(false);
+
 		}
 	}
 

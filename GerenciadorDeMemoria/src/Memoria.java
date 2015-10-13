@@ -44,11 +44,11 @@ public class Memoria {
 
 	public void liberaMemoria(Processo p) {
 		
+		
+		int[] quadrosParaLiberar = mv.removeProcesso(p);
 		if(mv.processoEstaNaMemoriaFisica(p)){
-			mf.removeProcesso(p.getNumPaginas(),mv.getQuadroDaMemoriaFisica( p.getPosInicialMemoriaVirtual()));
+			mf.removeProcesso(quadrosParaLiberar);
 		}
-		mv.removeProcesso(p);
-
 	}
 
 	

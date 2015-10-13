@@ -54,13 +54,17 @@ public class MemoriaVirtual {
 
 
 
-	void removeProcesso(Processo p) {
+	int[] removeProcesso(Processo p) {
+		
 		int paginaMemVirtual = p.getPosInicialMemoriaVirtual() / numBytesPorPagina;
+		int quadros[] = new int[p.getNumPaginas()];
 		for(int i = paginaMemVirtual; i < p.getNumPaginas() + paginaMemVirtual; i++){
 			if(paginas[i].estaNaMemoriaFisica()){
 				paginas[i].setEstaNaMemoriaFisica(false);
+				quadros[i] = paginas[i].getQuadro();
 			}
 		}
+		return quadros;
 	}
 }
 
