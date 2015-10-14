@@ -26,13 +26,21 @@ public class Gerenciador {
 	boolean alocarMemoriaProcesso(Processo novoProcesso){return true;}
 
 	
-	public void executar(Memoria mem, NotRecentlyUsedPage nrup){
+	public void executar(Memoria mem, Paginacao pag){
 		long tempoInicial = System.nanoTime();
 		long tempoAtual;
 		long tempoPassado;
 		tempoPassado = tempoAtual = 0;
 		while(!processos.isEmpty()){
 			tempoAtual = (long) ((System.nanoTime() - tempoInicial)/ 1e9);
+			
+			if(tempoAtual - tempoPassado > 0){
+				System.out.println(tempoAtual);
+				tempoPassado = tempoAtual;
+				imprimeProcessosNaMemoria();
+				imprimeBlocosLivres();
+				System.out.println("memoria livre:"+ memoriaLivre);
+			}
 			
 				
 			for(Processo p: processos){/*posicao menor que zero: o processo nao esta na memoria*/
@@ -71,15 +79,9 @@ public class Gerenciador {
 			}
 			
 	
-			rotinaDeAcessosMemoria(mem, nrup, tempoAtual);
+			rotinaDeAcessosMemoria(mem, pag, tempoAtual);
 			
-			if(tempoAtual - tempoPassado > 0){
-				System.out.println(tempoAtual);
-				tempoPassado = tempoAtual;
-				imprimeProcessosNaMemoria();
-				imprimeBlocosLivres();
-				System.out.println("memoria livre:"+ memoriaLivre);
-			}
+			
 			
 			
 		}
@@ -91,7 +93,7 @@ public class Gerenciador {
 	}
     
 	/*vai verificar o os proximos acessos a memoria no intervalo de tempo passado*/
-	void rotinaDeAcessosMemoria(Memoria mem, NotRecentlyUsedPage nrup, long tempoAtual){
+	void rotinaDeAcessosMemoria(Memoria mem, Paginacao pag, long tempoAtual){
 		
 		
 		AcessoDaMemoria acessoDaMemoria;
@@ -100,7 +102,7 @@ public class Gerenciador {
 			filaDeAcessoMemoria = p.getFilaDeAcessosDaMemoria();
 			if(!filaDeAcessoMemoria.isEmpty() && filaDeAcessoMemoria.element().getT() <= tempoAtual){
 				acessoDaMemoria = p.getFilaDeAcessosDaMemoria().poll();
-				mem.acessarMemoria(acessoDaMemoria, nrup, p.getPosInicialMemoriaVirtual());
+				mem.acessarMemoria(acessoDaMemoria, pag, p.getPosInicialMemoriaVirtual());
 			}
 		}
 	}

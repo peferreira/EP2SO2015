@@ -20,9 +20,11 @@ public class Simulador {
 		
 		/*Gerenciador nf = new NextFit(listaDeProc, le.getVirtual(), le.getTotal());*/
 		Memoria mem = new Memoria(le.getTotal(), le.getVirtual());
-		NotRecentlyUsedPage nrup = new NotRecentlyUsedPage(le.getTotal()/16);
-		
-		ff.executar(mem, nrup);
+		/*NotRecentlyUsedPage nrup = new NotRecentlyUsedPage(le.getTotal()/16);*/
+		/*Paginacao fifo = new FirstInFirstOut();*/
+		Paginacao scp = new SecondChancePage(le.getTotal()/16);
+
+		ff.executar(mem, scp);
 		
 		
 	}

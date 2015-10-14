@@ -1,5 +1,5 @@
 
-public class NotRecentlyUsedPage {
+public class NotRecentlyUsedPage extends Paginacao {
 	private boolean[] bitR;
 	private int numQuadros;
 	private int ultimoLimpaBitR;

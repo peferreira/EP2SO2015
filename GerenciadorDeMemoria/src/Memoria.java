@@ -14,7 +14,7 @@ public class Memoria {
 		return posicao/numBytesPorPagina;
 	}
 	
-	public int acessarMemoria(AcessoDaMemoria acessoDaMemoria, NotRecentlyUsedPage nrup, int posicaoNaMemoriaVirtual){
+	public int acessarMemoria(AcessoDaMemoria acessoDaMemoria, Paginacao pag, int posicaoNaMemoriaVirtual){
 		int quadroMemoria;
 		int posicaoMemoriaFisica;
 		quadroMemoria = mv.getQuadroDaMemoriaFisica(posicaoNaMemoriaVirtual+acessoDaMemoria.getP());
@@ -25,7 +25,7 @@ public class Memoria {
 			if(quadroMemoria == -1){/*se nao existe quadro livre na fisica*/
 				//nrup.paginacao(quadroMemoria, acessoDaMemoria.getT());
 				
-				quadroMemoria = nrup.selecionaQuadroParaSair();/*define o quadro da memoria com paginacao*/
+				quadroMemoria = pag.selecionaQuadroParaSair();/*define o quadro da memoria com paginacao*/
 				System.out.println("Quadro " + quadroMemoria + " esta saindo");
 				mv.removeQuadroDaMemoriaFisica(mf.getPagina(quadroMemoria));
 				mv.setQuadroDaMemoriaFisica(posicaoNaMemoriaVirtual+acessoDaMemoria.getP(), quadroMemoria);
@@ -38,7 +38,7 @@ public class Memoria {
 			}
 			
 		}
-		nrup.rotinaPaginacao(quadroMemoria, acessoDaMemoria.getT());
+		pag.rotinaPaginacao(quadroMemoria, acessoDaMemoria.getT());
 		posicaoMemoriaFisica = (posicaoNaMemoriaVirtual+acessoDaMemoria.getP())% numBytesPorPagina + quadroMemoria*numBytesPorPagina;
 		return posicaoMemoriaFisica;
 		
