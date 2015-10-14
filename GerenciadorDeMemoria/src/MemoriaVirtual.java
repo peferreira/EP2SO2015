@@ -65,7 +65,7 @@ public class MemoriaVirtual {
 				System.out.println("xxxxxxxxxxxxx");
 			}
 			else
-				System.out.println("Tenta remover quadro " + quadros[i] + ": mas nao esta na memoria fisica");
+				System.out.println("Tenta remover quadro " + quadros[i - paginaMemVirtual] + ": mas nao esta na memoria fisica");
 		}
 		return quadros;
 	}
