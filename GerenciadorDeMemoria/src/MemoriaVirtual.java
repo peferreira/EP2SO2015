@@ -44,7 +44,7 @@ public class MemoriaVirtual {
 			p.setEstaNaMemoriaFisica(false);
 		}
 		else
-			System.out.println("esta tentando remover uma pagina que nao estava na memoria fisica!!!!");
+			System.out.println("ERRO: esta tentando remover uma pagina que nao estava na memoria fisica!!!!");
 	}
 	
 	boolean processoEstaNaMemoriaFisica(Processo p){
@@ -61,8 +61,11 @@ public class MemoriaVirtual {
 		for(int i = paginaMemVirtual; i < p.getNumPaginas() + paginaMemVirtual; i++){
 			if(paginas[i].estaNaMemoriaFisica()){
 				paginas[i].setEstaNaMemoriaFisica(false);
-				quadros[i] = paginas[i].getQuadro();
+				quadros[i - paginaMemVirtual] = paginas[i].getQuadro();
+				System.out.println("xxxxxxxxxxxxx");
 			}
+			else
+				System.out.println("Tenta remover quadro " + quadros[i] + ": mas nao esta na memoria fisica");
 		}
 		return quadros;
 	}

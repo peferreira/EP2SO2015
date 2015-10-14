@@ -12,7 +12,7 @@ public class NotRecentlyUsedPage {
 	}
 	
 	void setBitRTrue(int quadro, int tempoChegada){
-		System.out.println("alguem acessou o quadro: "+ quadro +" no tempo: " + tempoChegada );
+		System.out.println("acessou o quadro: "+ quadro +" no tempo: " + tempoChegada );
 		limpaBitR(tempoChegada);
 		bitR[quadro] = true;
 	}

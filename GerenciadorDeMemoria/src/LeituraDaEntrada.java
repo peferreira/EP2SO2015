@@ -67,15 +67,15 @@ public class LeituraDaEntrada {
 					}
 					else{
 						t = Integer.parseInt(linha[i]);
-						AcessoDaMemoria acessoDaMemoria = new AcessoDaMemoria(p, t);
+						AcessoDaMemoria acessoDaMemoria = new AcessoDaMemoria(p, t, nome[numProcessos]); 
 						proc.filaDeAcessosDaMemoria.add(acessoDaMemoria);
 						
 					}
 				}
 				listaDeProcessos.add(proc);
 				numProcessos++;
-				return listaDeProcessos;
 			}
+			return listaDeProcessos;
 
 		} catch (IOException e) {
 			e.printStackTrace();

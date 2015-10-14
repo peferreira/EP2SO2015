@@ -18,19 +18,21 @@ public class Memoria {
 		int quadroMemoria;
 		int posicaoMemoriaFisica;
 		quadroMemoria = mv.getQuadroDaMemoriaFisica(posicaoNaMemoriaVirtual+acessoDaMemoria.getP());
-		
+		System.out.println("***Processo " + acessoDaMemoria.getNomeProc() + " tentando acessar memoria***");
+
 		if(quadroMemoria == -1){/*se nao esta na memoria fisica*/
 			quadroMemoria = mf.getQuadroLivreNaMemoria();
-			if(mf.getQuadroLivreNaMemoria() == -1){/*se nao existe quadro livre na fisica*/
+			if(quadroMemoria == -1){/*se nao existe quadro livre na fisica*/
 				//nrup.paginacao(quadroMemoria, acessoDaMemoria.getT());
 				
 				quadroMemoria = nrup.selecionaQuadroParaSair();/*define o quadro da memoria com paginacao*/
+				System.out.println("Quadro " + quadroMemoria + " esta saindo");
 				mv.removeQuadroDaMemoriaFisica(mf.getPagina(quadroMemoria));
 				mv.setQuadroDaMemoriaFisica(posicaoNaMemoriaVirtual+acessoDaMemoria.getP(), quadroMemoria);
-				
 				mf.setPaginaMemoriaVirtual(quadroMemoria, posicaoNaMemoriaVirtual+acessoDaMemoria.getP());
 			}
 			else{
+				System.out.println("Tem quadro livre na fisica");
 				mv.setQuadroDaMemoriaFisica(posicaoNaMemoriaVirtual+acessoDaMemoria.getP(), quadroMemoria);
 				mf.setPaginaMemoriaVirtual(quadroMemoria, posicaoNaMemoriaVirtual+acessoDaMemoria.getP());
 			}

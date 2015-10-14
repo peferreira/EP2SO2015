@@ -141,8 +141,17 @@ public class Gerenciador {
 			}
 
 		}
-		if(posicaoDeEntrada == -1)
-			blocosLivres.add(novoBlocoLivre);
+		/* quando o novo bloco vai entrar no fim da lista de blocos livres */
+		if(posicaoDeEntrada == -1) {
+			posicaoDeEntrada = blocosLivres.size();
+			if(posicaoDeEntrada > 0 && novoBlocoLivre.getInicio() == blocosLivres.get(posicaoDeEntrada-1).calculaPosicaoFinal() + 1 ){
+				aumentaBlocoEsq(posicaoDeEntrada-1, novoBlocoLivre.getTamanho());
+				uniuBlocos = true;
+				System.out.println("uniubloco");
+			}
+			else 
+				blocosLivres.add(novoBlocoLivre);
+		}
 
 		
 	}
