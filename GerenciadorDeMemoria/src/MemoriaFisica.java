@@ -3,6 +3,11 @@ public class MemoriaFisica {
 	private int numBytesPorPagina;
 	private Quadro[] quadros;
 	private int tamanho; 
+	public int getTamanho() {
+		return tamanho;
+	}
+
+
 	public MemoriaFisica(int tamanho, int numBytesPorPagina){
 		this.tamanho = tamanho;
 		this.numBytesPorPagina = numBytesPorPagina;

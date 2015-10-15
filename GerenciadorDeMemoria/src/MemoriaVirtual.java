@@ -4,6 +4,12 @@ public class MemoriaVirtual {
 	private Pagina[] paginas;
 	private int tamanho; 
 	
+	public int getTamanho() {
+		return tamanho;
+	}
+
+
+
 	public MemoriaVirtual(int tamanho, int numBytesPorPagina){
 		this.numBytesPorPagina = numBytesPorPagina;
 		this.tamanho = tamanho;

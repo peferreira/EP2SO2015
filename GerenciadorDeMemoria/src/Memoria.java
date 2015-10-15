@@ -10,6 +10,14 @@ public class Memoria {
 		
 	}
 	
+	public MemoriaFisica getMf() {
+		return mf;
+	}
+
+	public MemoriaVirtual getMv() {
+		return mv;
+	}
+
 	int calculaPaginaDaPosicao(int posicao){
 		return posicao/numBytesPorPagina;
 	}

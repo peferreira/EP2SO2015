@@ -9,6 +9,7 @@ public class Gerenciador {
 	List<Processo> processos;
 	int memoriaLivre;
 	private final int numBytesPorPagina = 16;
+	GeradorArquivoBinario gab;
 	
 	void incrementaMemLivre(int incremento){
 		memoriaLivre += incremento;
@@ -27,6 +28,7 @@ public class Gerenciador {
 
 	
 	public void executar(Memoria mem, Paginacao pag){
+		gab = new GeradorArquivoBinario();
 		long tempoInicial = System.nanoTime();
 		long tempoAtual;
 		long tempoPassado;
@@ -49,7 +51,6 @@ public class Gerenciador {
 						if(alocarMemoriaProcesso(p)){
 							//System.out.println("alocando memoria p/"+ p.nome + "  tempo atual:" + tempoAtual);
 							p.setTfRelativo((int)tempoAtual);
-							
 						}
 					
 						else{
@@ -65,7 +66,7 @@ public class Gerenciador {
 						}
 						/*else
 							//System.out.println("ERRO: DEVERIA TER ALOCADO POIS JA FEZ COMPACTACAO");*/
-						
+						gab.escreveArquivosBinarios(mem, processos);
 					}
 				}
 				/*posicao maior ou igual a 0 processo esta na memoria*/
