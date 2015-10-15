@@ -39,14 +39,15 @@ public class LeituraDaEntrada {
 	}*/
 	
 	/*le entrada e retorna lista de processos*/
-	List<Processo> criarListaDeProcessos(){
+	List<Processo> criarListaDeProcessos(String nomeArquivo){
+		String arquivo = nomeArquivo;
 		int numProcessos = 0;
 		BufferedReader br = null;
 		List<Processo> listaDeProcessos = new LinkedList<Processo>();
 		try {
 
 			String linhaAtual;
-     		br = new BufferedReader(new FileReader("src/entrada.txt"));
+     		br = new BufferedReader(new FileReader("src/"+ arquivo));
 			while ((linhaAtual = br.readLine()) != null) {
 				
 				System.out.println(linhaAtual);

@@ -5,6 +5,7 @@ public class NotRecentlyUsedPage extends Paginacao {
 	private int ultimoLimpaBitR;
 	private final int intervaloLimpaBitR = 5;
 	public NotRecentlyUsedPage(int numQuadros){
+		System.out.println("***NOT RECENTLY USED PAGE***");
 		bitR = new boolean[numQuadros];
 		this.numQuadros = numQuadros;
 		this.ultimoLimpaBitR = 0;

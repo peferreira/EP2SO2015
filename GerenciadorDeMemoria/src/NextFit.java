@@ -17,69 +17,11 @@ public class NextFit extends Gerenciador {
 		IndiceUltimoBlocoAlocado = 0;
 	}
 	
-	public void executar(){
-		long tempoInicial = System.nanoTime();
-		long tempoAtual;
-		long tempoPassado;
-		tempoPassado = tempoAtual = 0;
-		while(!processos.isEmpty()){
-			tempoAtual = (long) ((System.nanoTime() - tempoInicial)/ 1e9);
-			
-				
-			for(Processo p: processos){/*posicao menor que zero: o processo nao esta na memoria*/
-				if (tempoAtual >= p.getT0() && p.getPosInicialMemoriaVirtual() < 0) {
-					if(memoriaLivre >= p.getB()){
-						if(alocarMemoriaProcesso(p)){
-							//System.out.println("alocando memoria p/"+ p.nome + "  tempo atual:" + tempoAtual);
-							p.setTfRelativo((int)tempoAtual);
-						}
-					
-						else{
-							System.out.println("antes de compactar:");
-							imprimeProcessos();
-							compactarMemoriaVirtual();
-							System.out.println("depois de compactar");
-							imprimeProcessos();
-							if(alocarMemoriaProcesso(p)){
-								//System.out.println("alocando memoria p/"+ p.nome + "  tempo atual:" + tempoAtual);
-								p.setTfRelativo((int)tempoAtual);
-							}
-						}
-						/*else
-							//System.out.println("ERRO: DEVERIA TER ALOCADO POIS JA FEZ COMPACTACAO");*/
-						
-					}
-				}
-				/*posicao maior ou igual a 0 processo esta na memoria*/
-				if (p.getPosInicialMemoriaVirtual() >= 0 && tempoAtual >= p.getTfRelativo()  ){
-					liberaMemoriaProcesso(p);
-					processos.remove(p);
-					System.out.println("removi o processo" + p.nome + "   tempo atual:"+ tempoAtual+ "       tf relativo:"+ p.getTfRelativo());
-					break;/*evitar concurrent modification na lista*/
-				}
-			}
-			
-			if(tempoAtual - tempoPassado > 0){
-				System.out.println(tempoAtual);
-				tempoPassado = tempoAtual;
-				imprimeProcessosNaMemoria();
-				imprimeBlocosLivres();
-				System.out.println("memoria livre:"+ memoriaLivre);
-			}
-
-			
-		}
-		System.out.println("situacao final da memoria:");
-		imprimeProcessos();
-		imprimeProcessosNaMemoria();
-		imprimeBlocosLivres();
-		System.out.println("memoria livre:"+ memoriaLivre);
-	}
 	
 	/*alocação de memoria do next fit*/
 	
 	boolean alocarMemoriaProcesso(Processo novoProcesso){
-		System.out.println("aloca memoria Next Fit");
+		System.out.println("***Alocando memoria com NEXT FIT***");
 
 		BlocoLivre bloco;
 		int indiceBlocoInicial = IndiceUltimoBlocoAlocado;
