@@ -56,9 +56,8 @@ public class Memoria {
 		
 		
 		int[] quadrosParaLiberar = mv.removeProcesso(p);
-		if(mv.processoEstaNaMemoriaFisica(p)){
-			mf.removeProcesso(quadrosParaLiberar);
-		}
+		mf.removeProcesso(quadrosParaLiberar);
+
 	}
 
 	

@@ -39,9 +39,11 @@ public class MemoriaFisica {
 
 
 	void removeProcesso(int[] quadrosParaRemover) {
-		for( int i = 0; i < quadros.length; i++){
-			quadros[quadrosParaRemover[i]].setQuadroOcupado(false);
-
+		for( int i = 0; i < quadrosParaRemover.length; i++){
+			if (quadrosParaRemover[i] != -1) {
+				System.out.println("quadro a remover " + quadrosParaRemover[i]);
+				quadros[quadrosParaRemover[i]].setQuadroOcupado(false);
+			}
 		}
 	}
 

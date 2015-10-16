@@ -25,7 +25,7 @@ public class Processo implements Comparable<Processo>{
 		this.b = b;
 		this.pid = pid;
 		posInicialMemoriaVirtual = -1;
-		this.numPaginas = b/16;
+		this.numPaginas = calculaNumeroPaginas(b);
 		filaDeAcessosDaMemoria = new LinkedList<AcessoDaMemoria>();
 	}
 
@@ -83,6 +83,18 @@ public class Processo implements Comparable<Processo>{
 			return 1;
 		}
 		
+	}
+	
+	public int calculaNumeroPaginas(int tamanho) {
+		
+		int paginas;
+		if (tamanho%16 == 0) {
+			paginas = b/16;
+		}
+		else {
+			paginas = b/16 + 1;
+		}
+		return paginas;
 	}
 
 

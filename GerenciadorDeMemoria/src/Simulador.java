@@ -28,7 +28,9 @@ public class Simulador {
 			paginacao = prompt.getAlgPaginacao();
 			intervalo = prompt.getIntervalo();
 			
+			
 			mem = new Memoria(le.getTotal(), le.getVirtual());
+			
 			
 			switch (espaco) {
 				case 1:
@@ -58,13 +60,6 @@ public class Simulador {
 				default:
 					break;
 			}
-			
-			
-			
-			/*Gerenciador nf = new NextFit(listaDeProc, le.getVirtual(), le.getTotal());*/
-			/*NotRecentlyUsedPage nrup = new NotRecentlyUsedPage(le.getTotal()/16);*/
-			/*Paginacao fifo = new FirstInFirstOut();*/
-			/*Paginacao scp = new SecondChancePage(le.getTotal()/16);*/
 	
 			ger.executar(mem, pag);
 		}

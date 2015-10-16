@@ -11,11 +11,27 @@ public class Gerenciador {
 	private final int numBytesPorPagina = 16;
 	GeradorArquivoBinario gab;
 	
-	void incrementaMemLivre(int incremento){
+	void incrementaMemLivre(int tamanhoProcessoSaindo){
+		
+		int incremento;
+		if (tamanhoProcessoSaindo%numBytesPorPagina == 0) {
+			incremento = tamanhoProcessoSaindo;
+		}
+		else {
+			incremento = (tamanhoProcessoSaindo/numBytesPorPagina + 1)*numBytesPorPagina;
+		}
 		memoriaLivre += incremento;
 	}
 	
-	void decrementaMemLivre(int decremento){
+	void decrementaMemLivre(int tamanhoProcessoEntrando){
+		
+		int decremento;
+		if (tamanhoProcessoEntrando%numBytesPorPagina == 0) {
+			decremento = tamanhoProcessoEntrando;
+		}
+		else {
+			decremento = (tamanhoProcessoEntrando/numBytesPorPagina + 1)*numBytesPorPagina;
+		}
 		memoriaLivre -= decremento;
 	}
 	
@@ -100,17 +116,20 @@ public class Gerenciador {
 		AcessoDaMemoria acessoDaMemoria;
 		Queue<AcessoDaMemoria> filaDeAcessoMemoria;
 		for(Processo p: processos){
-			filaDeAcessoMemoria = p.getFilaDeAcessosDaMemoria();
-			if(!filaDeAcessoMemoria.isEmpty() && filaDeAcessoMemoria.element().getT() <= tempoAtual){
-				acessoDaMemoria = p.getFilaDeAcessosDaMemoria().poll();
-				mem.acessarMemoria(acessoDaMemoria, pag, p.getPosInicialMemoriaVirtual());
+			if(p.getPosInicialMemoriaVirtual() >= 0){
+				filaDeAcessoMemoria = p.getFilaDeAcessosDaMemoria();
+				if(!filaDeAcessoMemoria.isEmpty() && filaDeAcessoMemoria.element().getT() <= tempoAtual){
+					acessoDaMemoria = p.getFilaDeAcessosDaMemoria().poll();
+					mem.acessarMemoria(acessoDaMemoria, pag, p.getPosInicialMemoriaVirtual());
+					gab.escreveArquivosBinarios(mem, processos);
+				}
 			}
 		}
 	}
 	
 	void liberaMemoriaProcesso(Processo processoSaindo){
 		BlocoLivre novoBlocoLivre = new BlocoLivre(processoSaindo.getPosInicialMemoriaVirtual(),
-								                   processoSaindo.getB());
+								                   processoSaindo.getNumPaginas()*numBytesPorPagina);
 		boolean uniuBlocos = false;
 		int posicaoDeEntrada = -1;
 		incrementaMemLivre(processoSaindo.getB());
@@ -119,7 +138,7 @@ public class Gerenciador {
 				posicaoDeEntrada = blocosLivres.indexOf(bloco);
 				System.out.println("posicao entrada:" + posicaoDeEntrada);
 				if(posicaoDeEntrada > 0 ){
-					if(novoBlocoLivre.getInicio() == blocosLivres.get(posicaoDeEntrada-1).calculaPosicaoFinal() + 1 ){
+					if(novoBlocoLivre.getInicio() == blocosLivres.get(posicaoDeEntrada-1).calculaPosicaoFinal1() + 1 ){
 						aumentaBlocoEsq(posicaoDeEntrada-1, novoBlocoLivre.getTamanho());
 						uniuBlocos = true;
 						System.out.println("uniubloco");
