@@ -61,7 +61,7 @@ public class Simulador {
 					break;
 			}
 	
-			ger.executar(mem, pag);
+			ger.executar(mem, pag, intervalo);
 		}
 		
 	}

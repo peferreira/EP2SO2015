@@ -8,7 +8,7 @@ public class SecondChancePage extends Paginacao {
 	private boolean[] bitR;
 	private int numQuadros;
 	SecondChancePage(int numQuadros) {
-		System.out.println("***SECOND CHANGE PAGE***");
+		/*System.out.println("***SECOND CHANGE PAGE***");*/
 		bitR = new boolean[numQuadros];
 		filaDeQuadros = new LinkedList<Integer>();
 		this.numQuadros = numQuadros;
@@ -25,11 +25,11 @@ public class SecondChancePage extends Paginacao {
 				segundaChance = filaDeQuadros.poll();
 				filaDeQuadros.add(segundaChance);
 				bitR[segundaChance] = false;
-			    System.out.println("ganhou segunda chance!");
+			    /*System.out.println("ganhou segunda chance!");*/
 
 			}
 		}
-		System.out.println("ERRO: nao tinha ngm na fila de quadros, ja deveriam existir quadros livres");
+		/*System.out.println("ERRO: nao tinha ngm na fila de quadros, ja deveriam existir quadros livres");*/
 		return -1;
 	} 
 	
@@ -39,6 +39,6 @@ public class SecondChancePage extends Paginacao {
 		}
 		else
 			bitR[quadroMemoria] = true;
-		System.out.println("acesso ao quadro " + quadroMemoria + " no tempo " + t);
+		/*System.out.println("acesso ao quadro " + quadroMemoria + " no tempo " + t);*/
 	}
 }

@@ -42,23 +42,6 @@ public class GeradorArquivoBinario {
 		}
 	}
 	
-	void escreveProcessoMemoriaFisicaANTIGO(Memoria mem, byte[] bytesFisica, Processo p) {
-
-		int quadroMemFisica;
-		
-		for (int i = p.getPosInicialMemoriaVirtual(); i < p.getPosInicialMemoriaVirtual() + p.getB(); i++) {
-			if (i%16 == 0) {
-
-				quadroMemFisica = mem.getMv().getQuadroDaMemoriaFisica(i);
-				if (quadroMemFisica != -1) { /* se quadro = -1 a pagina procurada nao esta na memoria fisica*/
-					System.out.println("QUADRO NA MEMORIA FISICA");
-					for (int j = 0; j < 16; j++)
-						bytesFisica[quadroMemFisica*16 + j] = converteIntParaByte(p.getPid());
-				}
-			}
-		}
-	}
-	
 	void escreveProcessoMemoriaFisica(Memoria mem, byte[] bytesFisica, Processo p) {
 
 		int quadroMemFisica;
@@ -89,8 +72,8 @@ public class GeradorArquivoBinario {
 	
 	void escreveArquivosBinarios(Memoria mem, List<Processo> processos) {
 		
-		String filePathVir = "src/ep2.vir";
-		String filePathMem = "src/ep2.mem";
+		String filePathVir = "/tmp/ep2.vir";
+		String filePathMem = "/tmp/ep2.mem";
 
 		File ep2vir = new File(filePathVir);
 		File ep2mem = new File(filePathMem);
@@ -115,7 +98,7 @@ public class GeradorArquivoBinario {
 		}
 		
 		try {
-			fos = new FileOutputStream(ep2vir);
+			fos = new FileOutputStream("/tmp/ep2.vir");
 			fos.write(bytesVirtual);
 			fos.close();
 
@@ -124,7 +107,7 @@ public class GeradorArquivoBinario {
 			}
 		
 		try {
-			fos = new FileOutputStream(ep2mem);
+			fos = new FileOutputStream("/tmp/ep2.mem");
 			fos.write(bytesFisica);
 			fos.close();
 
@@ -132,13 +115,14 @@ public class GeradorArquivoBinario {
 			e1.printStackTrace();
 			}
 		
+		/*
 		System.out.println("Memoria virtual:");
-		leArquivoBinario(bytesVirtual,filePathVir);
+		leArquivoBinario(filePathVir);
 		System.out.println("Memoria fisica:");
-		leArquivoBinario(bytesFisica,filePathMem);
+		leArquivoBinario(filePathMem); */
 	}
 	
-	void leArquivoBinario(byte[] bytes, String filePath) {
+	void leArquivoBinario(String filePath) {
 		
 		File file = new File(filePath);
 		FileOutputStream fos = null;
@@ -150,12 +134,15 @@ public class GeradorArquivoBinario {
 			fis.read(fileContent);
 			fis.close();
 			
-			for(int i = 0; i < bytes.length; i++) {
+			for(int i = 0; i < fileContent.length; i++) {
 				
 				if (i%16 == 0) {
 					System.out.println();
 				}
-				System.out.print(bytes[i]+" ");
+				int temp = fileContent[i]+128;
+				if (temp == 255)
+					temp = -1;
+				System.out.print(temp+" ");
 
 			}
 			System.out.println();

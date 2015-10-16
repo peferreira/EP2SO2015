@@ -11,7 +11,7 @@ public class FirstFit extends Gerenciador{
 	}
 	
 	boolean alocarMemoriaProcesso(Processo novoProcesso){
-		System.out.println("***Alocando memoria com FIRST FIT***");
+		//System.out.println("***Alocando memoria com FIRST FIT***");
 		for(BlocoLivre bloco: blocosLivres){
 			if(bloco.getTamanho() >= novoProcesso.getB()){
 				novoProcesso.setPosInicialMemoriaVirtual(bloco.getInicio());
@@ -22,7 +22,5 @@ public class FirstFit extends Gerenciador{
 		}
 		return false;
 	}
-	
-	
-	
+
 }

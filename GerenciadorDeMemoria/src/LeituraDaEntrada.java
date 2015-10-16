@@ -25,8 +25,8 @@ public class LeituraDaEntrada {
 
 	public LeituraDaEntrada(){
 		numProcessos = 0;
-		virtual = 64;
-		total = 32;
+		/*virtual = 64;
+		total = 32;*/
 	}
 	
 	/*List<Processo> criarListaDeProcessos(){
@@ -48,10 +48,17 @@ public class LeituraDaEntrada {
 
 			String linhaAtual;
      		br = new BufferedReader(new FileReader("src/"+ arquivo));
+     		
+     		linhaAtual = br.readLine();
+     		String[] linha = linhaAtual.split(" ");
+     		
+     		total = Integer.parseInt(linha[0]);
+     		virtual = Integer.parseInt(linha[1]);
+     		     		
 			while ((linhaAtual = br.readLine()) != null) {
 				
 				System.out.println(linhaAtual);
-				String[] linha = linhaAtual.split(" ");
+				linha = linhaAtual.split(" ");
 				
 				t0[numProcessos] = Integer.parseInt(linha[0]);
 				nome[numProcessos] = linha[1];

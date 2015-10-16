@@ -21,7 +21,7 @@ public class NextFit extends Gerenciador {
 	/*alocação de memoria do next fit*/
 	
 	boolean alocarMemoriaProcesso(Processo novoProcesso){
-		System.out.println("***Alocando memoria com NEXT FIT***");
+		/*System.out.println("***Alocando memoria com NEXT FIT***");*/
 
 		BlocoLivre bloco;
 		int indiceBlocoInicial = IndiceUltimoBlocoAlocado;

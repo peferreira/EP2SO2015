@@ -43,7 +43,7 @@ public class Gerenciador {
 	boolean alocarMemoriaProcesso(Processo novoProcesso){return true;}
 
 	
-	public void executar(Memoria mem, Paginacao pag){
+	public void executar(Memoria mem, Paginacao pag, int intervalo){
 		gab = new GeradorArquivoBinario();
 		long tempoInicial = System.nanoTime();
 		long tempoAtual;
@@ -52,12 +52,16 @@ public class Gerenciador {
 		while(!processos.isEmpty()){
 			tempoAtual = (long) ((System.nanoTime() - tempoInicial)/ 1e9);
 			
-			if(tempoAtual - tempoPassado > 0){
-				System.out.println(tempoAtual);
+			if(tempoAtual - tempoPassado > intervalo){
+				System.out.println("Tempo atual " + tempoAtual);
 				tempoPassado = tempoAtual;
 				imprimeProcessosNaMemoria();
 				imprimeBlocosLivres();
 				System.out.println("memoria livre:"+ memoriaLivre);
+				System.out.println("Memoria total:");
+				gab.leArquivoBinario("/tmp/ep2.mem");
+				System.out.println("Memoria virtual:");
+				gab.leArquivoBinario("/tmp/ep2.vir");
 			}
 			
 				
@@ -70,10 +74,10 @@ public class Gerenciador {
 						}
 					
 						else{
-							System.out.println("antes de compactar:");
+							/*System.out.println("antes de compactar:");*/
 							imprimeProcessos();
 							compactarMemoriaVirtual();
-							System.out.println("depois de compactar");
+							/*System.out.println("depois de compactar");*/
 							imprimeProcessos();
 							if(alocarMemoriaProcesso(p)){
 								//System.out.println("alocando memoria p/"+ p.nome + "  tempo atual:" + tempoAtual);
@@ -103,10 +107,10 @@ public class Gerenciador {
 			
 		}
 		System.out.println("situacao final da memoria:");
-		imprimeProcessos();
-		imprimeProcessosNaMemoria();
-		imprimeBlocosLivres();
-		System.out.println("memoria livre:"+ memoriaLivre);
+		/*imprimeProcessos();*/
+		/*imprimeProcessosNaMemoria();*/
+		/*imprimeBlocosLivres();*/
+		/*System.out.println("memoria livre:"+ memoriaLivre);*/
 	}
     
 	/*vai verificar o os proximos acessos a memoria no intervalo de tempo passado*/
@@ -138,10 +142,10 @@ public class Gerenciador {
 				posicaoDeEntrada = blocosLivres.indexOf(bloco);
 				System.out.println("posicao entrada:" + posicaoDeEntrada);
 				if(posicaoDeEntrada > 0 ){
-					if(novoBlocoLivre.getInicio() == blocosLivres.get(posicaoDeEntrada-1).calculaPosicaoFinal1() + 1 ){
+					if(novoBlocoLivre.getInicio() == blocosLivres.get(posicaoDeEntrada-1).calculaPosicaoFinal() + 1 ){
 						aumentaBlocoEsq(posicaoDeEntrada-1, novoBlocoLivre.getTamanho());
 						uniuBlocos = true;
-						System.out.println("uniubloco");
+						/*System.out.println("uniubloco");*/
 					}
 				}
 				if(posicaoDeEntrada < blocosLivres.size() ){
@@ -154,7 +158,7 @@ public class Gerenciador {
 							aumentaBlocoDir(posicaoDeEntrada, novoBlocoLivre.getTamanho());
 							uniuBlocos = true;
 						}
-						System.out.println("uniubloco2!");
+						/*System.out.println("uniubloco2!");*/
 					}
 				}
 				if(uniuBlocos == false)
@@ -169,7 +173,7 @@ public class Gerenciador {
 			if(posicaoDeEntrada > 0 && novoBlocoLivre.getInicio() == blocosLivres.get(posicaoDeEntrada-1).calculaPosicaoFinal() + 1 ){
 				aumentaBlocoEsq(posicaoDeEntrada-1, novoBlocoLivre.getTamanho());
 				uniuBlocos = true;
-				System.out.println("uniubloco");
+				/*System.out.println("uniubloco");*/
 			}
 			else 
 				blocosLivres.add(novoBlocoLivre);
@@ -249,8 +253,9 @@ public class Gerenciador {
 	}
 	
 	void imprimeBlocosLivres(){
+		System.out.println("Lista de blocos livres na memória:");
 		for (BlocoLivre b: blocosLivres){
-			System.out.println("inicio:" + b.getInicio() + "     final:"+ b.calculaPosicaoFinal() + "     tamanho:"+ b.getTamanho());
+			System.out.println("posicao inicial:" + b.getInicio() + " posicao final:"+ b.calculaPosicaoFinal() + " tamanho:"+ b.getTamanho());
 		}
 	}
 	

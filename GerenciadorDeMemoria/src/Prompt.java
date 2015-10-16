@@ -13,11 +13,6 @@ public class Prompt {
 	Prompt() {
 		br = null;
 		sc = new Scanner(System.in);
-		
-		arquivoEntrada = "entrada.txt";
-		algEspacoLivre = 1;
-		algPaginacao = 1;
-		intervalo = 5;
 	}
 	
 	boolean leComandos() {

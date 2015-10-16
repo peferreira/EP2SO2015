@@ -9,7 +9,6 @@ public class FirstInFirstOut extends Paginacao {
 
 	FirstInFirstOut() {
 		
-		System.out.println("***FIRST IN FIRST OUT***s");
 		filaDeQuadros = new LinkedList<Integer>();
 	}
 	
@@ -22,6 +21,5 @@ public class FirstInFirstOut extends Paginacao {
 		if (!filaDeQuadros.contains(quadroMemoria)) {
 			filaDeQuadros.add(quadroMemoria);
 		}
-		System.out.println("acesso ao quadro " + quadroMemoria + " no tempo " + t);
 	}
 }

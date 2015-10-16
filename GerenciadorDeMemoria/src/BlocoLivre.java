@@ -22,8 +22,4 @@ public class BlocoLivre {
 	public int calculaPosicaoFinal(){
 		return inicio+tamanho-1;
 	}
-	
-	public int calculaPosicaoFinal1(){
-		return inicio+tamanho-1;
-	}
 }
